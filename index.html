@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Math Vault · Olympiad Links & Progress</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #0b1220;
+      --bg-soft:#0f172a;
+      --card:#111827cc; /* glass */
+      --muted:#9aa3b2;
+      --text:#e5efff;
+      --brand:#66d9e8; /* teal */
+      --brand-2:#a78bfa; /* purple */
+      --ok:#34d399;
+      --warn:#f59e0b;
+      --danger:#ef4444;
+      --ring: 0 0 0 3px rgba(102,217,232,.25);
+      --radius: 16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,Arial,Helvetica,sans-serif; color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(102,217,232,.15), transparent 60%),
+        radial-gradient(900px 500px at 120% 10%, rgba(167,139,250,.12), transparent 50%),
+        linear-gradient(180deg, var(--bg), var(--bg-soft) 60%);
+      overflow-y:overlay;
+    }
+    a{color:var(--brand); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .app{max-width:1100px; margin:0 auto; padding:24px}
+
+    /* Header */
+    header{
+      display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px;
+    }
+    .logo{display:flex; align-items:center; gap:12px}
+    .logo svg{filter:drop-shadow(0 8px 24px rgba(102,217,232,.35))}
+    h1{font-size: clamp(20px, 3.5vw, 36px); margin:0; letter-spacing:.2px}
+    .tag{font-size:12px; color:#b8c2d6; border:1px solid #20304d; padding:4px 8px; border-radius:999px; backdrop-filter:blur(8px);}
+
+    /* Controls */
+    .controls{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:8px 0 20px}
+    .search{position:relative; flex:1 1 320px}
+    .search input{width:100%; background:#0b1228; color:var(--text); border:1px solid #1f2b45; border-radius:12px; padding:12px 14px 12px 38px; outline:none}
+    .search input:focus{box-shadow:var(--ring); border-color:#27406f}
+    .search svg{position:absolute; left:12px; top:50%; transform:translateY(-50%); opacity:.55}
+    .btn{background:linear-gradient(135deg, #1b2a41, #162238); border:1px solid #233352; color:#dce7ff; padding:10px 14px; border-radius:12px; cursor:pointer; display:inline-flex; align-items:center; gap:8px}
+    .btn:hover{filter:brightness(1.05)}
+    .btn.primary{background:linear-gradient(135deg, #1d3a3f, #142a2d); border-color:#1c4b50}
+
+    /* Tabs */
+    .tabs{display:flex; gap:8px; margin:6px 0 16px}
+    .tab{padding:10px 12px; border:1px solid #20304d; border-radius:999px; cursor:pointer; color:#cdd6eb; background:#0c1323}
+    .tab.active{background:linear-gradient(135deg, rgba(102,217,232,.15), rgba(167,139,250,.15)); color:#fff; border-color:#2a3b63}
+
+    /* Grid of years */
+    .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border:1px solid #20304d; border-radius:var(--radius); padding:14px; box-shadow:0 15px 45px rgba(10,18,40,.35); backdrop-filter:blur(6px)}
+    .card h3{margin:0 0 6px; font-size:18px}
+    .sub{font-size:12px; color:var(--muted)}
+
+    .links{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px}
+    .pill{padding:7px 10px; border:1px solid #2a3b63; border-radius:999px; font-size:13px; color:#e3edff; background:#0b1326; display:inline-flex; align-items:center; gap:8px}
+    .pill:hover{background:#0e1931}
+    .pill svg{opacity:.7}
+    .star{margin-left:auto; cursor:pointer; opacity:.8}
+    .star.active{color:#ffd271}
+
+    /* Problem ticks */
+    .problems{display:flex; gap:8px; align-items:center; margin-top:10px}
+    .chip{user-select:none; font-size:12px; padding:6px 8px; border-radius:8px; border:1px solid #2a3b63; background:#0c1323; cursor:pointer}
+    .chip.done{border-color:#1f694f; background:linear-gradient(135deg, #0e2a23, #0c201b);}
+
+    .bar{height:8px; background:#17223a; border-radius:999px; overflow:hidden; margin-top:10px}
+    .bar>i{display:block; height:100%; width:0%; background:linear-gradient(90deg, var(--brand), var(--brand-2)); transition:width .3s}
+
+    /* Progress view */
+    .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin:10px 0 18px}
+    .stat{padding:16px; border:1px solid #233352; background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border-radius:var(--radius)}
+    .stat h4{margin:0 0 4px}
+    .muted{color:#a5afc7; font-size:12px}
+
+    /* Modal */
+    dialog{border:none; padding:0; border-radius:16px; background:#0b1326; color:var(--text); border:1px solid #223250; width:min(560px, 92vw)}
+    dialog::backdrop{background:rgba(6,10,22,.65)}
+    .modal-header{display:flex; justify-content:space-between; align-items:center; padding:14px 16px; border-bottom:1px solid #223250}
+    .modal-body{padding:16px}
+    .row{display:flex; gap:10px}
+    .row>label{flex:1}
+    label span{display:block; font-size:12px; color:#a5afc7; margin-bottom:6px}
+    input[type="text"], select{width:100%; background:#0b1228; color:var(--text); border:1px solid #1f2b45; border-radius:12px; padding:10px 12px; outline:none}
+
+    /* Footer */
+    footer{margin:26px 0 12px; text-align:center; color:#9fb2d1; font-size:12px}
+
+    /* Responsive helpers */
+    @media (max-width:720px){ .links{gap:6px} .pill{padding:6px 8px} }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="logo">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M4 18c3-6 13-6 16 0" stroke="currentColor" stroke-width="1.4" opacity=".7"/>
+          <circle cx="12" cy="8" r="4.8" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="12" cy="8" r="1.6" fill="currentColor"/>
+        </svg>
+        <div>
+          <h1>Math Vault</h1>
+          <div class="tag">Olympiad links • PDF/Wiki/Forums • Offline progress (localStorage)</div>
+        </div>
+      </div>
+      <button class="btn primary" id="exportBtn" title="Export your data as JSON">💾 Export</button>
+    </header>
+
+    <div class="controls">
+      <div class="search">
+        <input id="search" placeholder="Search year or contest (e.g. 2018, IMO)…" />
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 21l-3.5-3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <select id="contestPicker" class="btn" title="Choose contest">
+        <option>IMO</option>
+        <option>APMO</option>
+        <option>USAMO</option>
+        <option>RMO</option>
+        <option value="custom">+ Add custom…</option>
+      </select>
+      <button class="btn" id="addLinkBtn">➕ Add link</button>
+      <button class="btn" id="settingsBtn">⚙️ Settings</button>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" data-tab="explore">Explore</div>
+      <div class="tab" data-tab="progress">Progress</div>
+      <div class="tab" data-tab="bookmarks">Bookmarks</div>
+    </div>
+
+    <section id="explore" class="tabview">
+      <div class="grid" id="grid"></div>
+    </section>
+
+    <section id="progress" class="tabview" style="display:none">
+      <div class="stats">
+        <div class="stat"><h4 id="statSolved">0</h4><div class="muted">Problems solved</div></div>
+        <div class="stat"><h4 id="statAttempted">0</h4><div class="muted">Problems attempted</div></div>
+        <div class="stat"><h4 id="statYears">0 / 0</h4><div class="muted">Years with ≥1 problem solved</div></div>
+        <div class="stat"><h4 id="studyMinutes">0 min</h4><div class="muted">Study log</div></div>
+      </div>
+      <div class="card">
+        <h3>Quick log</h3>
+        <div class="row" style="margin-top:8px">
+          <label><span>Minutes</span><input type="text" id="logMinutes" placeholder="e.g. 25"></label>
+          <label><span>Note</span><input type="text" id="logNote" placeholder="What did you work on?"></label>
+          <button class="btn" id="addLogBtn" style="align-self:flex-end">Add</button>
+        </div>
+        <div id="logList" style="margin-top:12px" class="sub"></div>
+      </div>
+    </section>
+
+    <section id="bookmarks" class="tabview" style="display:none">
+      <div id="bmList" class="grid"></div>
+    </section>
+
+    <footer>Made with ❤️ for problem solvers. Your data lives 100% in your browser. You can export/import anytime.</footer>
+  </div>
+
+  <!-- Add/Settings Modal -->
+  <dialog id="modal">
+    <div class="modal-header">
+      <strong id="modalTitle">Add link</strong>
+      <button class="btn" onclick="modal.close()">✖</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </dialog>
+
+  <script>
+    /* ----------------------
+       Data & Utilities
+    ---------------------- */
+    const storeKey = 'mathvault.v1';
+    const defaultPdfTemplate = {
+      name: 'PDF (search)',
+      // Using a search page avoids broken hardcoded links
+      href: (contest, year) => `https://duckduckgo.com/?q=${encodeURIComponent(contest + ' ' + year + ' pdf solutions')}`
+    };
+
+    const officialTemplate = {
+      name: 'Official',
+      href: (contest, year) => contest === 'IMO'
+        ? `https://www.imo-official.org/problems.aspx?year=${year}`
+        : `https://duckduckgo.com/?q=${encodeURIComponent(contest + ' ' + year + ' official problems')}`
+    };
+
+    const wikiTemplate = {
+      name: 'AoPS Wiki',
+      href: (contest, year) => `https://artofproblemsolving.com/wiki/index.php/${encodeURIComponent(contest)}_${year}`
+    };
+
+    const forumTemplate = {
+      name: 'AoPS Forum',
+      href: (contest, year) => `https://artofproblemsolving.com/community/search?q=${encodeURIComponent(contest + ' ' + year + ' Problem 1')}`
+    };
+
+    // Seed years for common contests
+    function yearRange(a,b){return Array.from({length:b-a+1},(_,i)=>a+i)}
+    const seeds = {
+      IMO: yearRange(1997, new Date().getFullYear()),
+      APMO: yearRange(1990, new Date().getFullYear()),
+      USAMO: yearRange(1980, new Date().getFullYear()),
+      RMO: yearRange(1990, new Date().getFullYear()),
+    };
+
+    const defaultState = {
+      contests: {
+        IMO: { years: seeds.IMO },
+        APMO: { years: seeds.APMO },
+        USAMO: { years: seeds.USAMO },
+        RMO: { years: seeds.RMO },
+      },
+      links: [defaultPdfTemplate, wikiTemplate, officialTemplate, forumTemplate],
+      // per contest>year>status
+      progress: {}, // key `${contest}:${year}` -> { p1:0/1/2, ..., star:true }
+      study: [] // {t:number(min), note:string, ts:number}
+    };
+
+    const $ = (sel, par=document) => par.querySelector(sel);
+    const $$ = (sel, par=document) => Array.from(par.querySelectorAll(sel));
+
+    function load(){
+      try{ return JSON.parse(localStorage.getItem(storeKey)) || structuredClone(defaultState); }
+      catch{ return structuredClone(defaultState); }
+    }
+    function save(){ localStorage.setItem(storeKey, JSON.stringify(state)); }
+
+    let state = load();
+
+    /* ----------------------
+       Rendering
+    ---------------------- */
+    const grid = $('#grid');
+    const search = $('#search');
+    const picker = $('#contestPicker');
+    const bmList = $('#bmList');
+
+    function linkFor(tpl, contest, year){ try { return tpl.href(contest, year); } catch{return '#';} }
+
+    function getYears(contest){
+      const c = state.contests[contest];
+      return (c?.years || []).slice().sort((a,b)=>b-a); // newest first
+    }
+
+    function getProgressKey(contest, year){ return `${contest}:${year}`; }
+    function readProg(contest, year){ return state.progress[getProgressKey(contest,year)] || {}; }
+    function writeProg(contest, year, patch){
+      const key = getProgressKey(contest, year);
+      state.progress[key] = {...readProg(contest,year), ...patch};
+      save();
+      updateStats();
+    }
+
+    function render(){
+      const contest = getContest();
+      const q = search.value.trim().toLowerCase();
+      grid.innerHTML = '';
+      const years = getYears(contest).filter(y => String(y).includes(q) || contest.toLowerCase().includes(q));
+
+      years.forEach(year => {
+        const prog = readProg(contest, year);
+        const solved = [1,2,3,4,5,6].reduce((s,i)=>s + (prog['p'+i]===2?1:0), 0);
+        const attempted = [1,2,3,4,5,6].reduce((s,i)=>s + (prog['p'+i]?1:0), 0);
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div style="display:flex; gap:10px; align-items:center">
+            <div>
+              <h3>${contest} ${year}</h3>
+              <div class="sub">Solved ${solved}/6 · Attempted ${attempted}/6</div>
+            </div>
+            <div class="star ${prog.star?'active':''}" title="Bookmark">★</div>
+          </div>
+          <div class="links"></div>
+          <div class="problems"></div>
+          <div class="bar"><i style="width:${(solved/6)*100}%"></i></div>
+        `;
+
+        // links
+        const linksWrap = $('.links', card);
+        state.links.forEach(tpl => {
+          const a = document.createElement('a');
+          a.className = 'pill'; a.href = linkFor(tpl, contest, year); a.target = '_blank';
+          a.rel = 'noopener noreferrer'; a.innerHTML = `
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 3h7v7" stroke="currentColor" stroke-width="1.5"/><path d="M10 14L21 3" stroke="currentColor" stroke-width="1.5"/><path d="M21 14v7h-7" stroke="currentColor" stroke-width="1.5"/><path d="M3 10L14 21" stroke="currentColor" stroke-width="1.5"/></svg>
+            ${tpl.name}`;
+          linksWrap.appendChild(a);
+        });
+
+        // custom links added by user
+        const ck = `custom:${contest}:${year}`;
+        (state[ck] || []).forEach(u => {
+          const a = document.createElement('a');
+          a.className = 'pill'; a.href = u.href; a.target = '_blank'; a.rel = 'noopener'; a.textContent = u.name;
+          linksWrap.appendChild(a);
+        });
+
+        // problems chips
+        const probs = $('.problems', card);
+        [1,2,3,4,5,6].forEach(i => {
+          const chip = document.createElement('div');
+          const val = prog['p'+i] || 0; // 0 none, 1 tried, 2 solved
+          chip.className = 'chip' + (val===2?' done':'');
+          chip.textContent = 'P'+i + (val===1?' • tried': val===2?' • solved':'');
+          chip.title = 'Click to cycle: none → tried → solved';
+          chip.addEventListener('click', () => {
+            const now = (readProg(contest, year)['p'+i] || 0);
+            const next = (now + 1) % 3; // 0→1→2→0
+            writeProg(contest, year, {['p'+i]: next});
+            render();
+          });
+          probs.appendChild(chip);
+        });
+
+        // star
+        $('.star', card).addEventListener('click', () =>{
+          writeProg(contest, year, {star: !prog.star});
+          render();
+        });
+
+        grid.appendChild(card);
+      });
+
+      renderBookmarks();
+      updateStats();
+    }
+
+    function renderBookmarks(){
+      const contest = getContest();
+      const years = getYears(contest).filter(y => !!readProg(contest,y).star);
+      bmList.innerHTML = '';
+      years.forEach(y => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `<h3>★ ${contest} ${y}</h3><div class="links"></div>`;
+        const linksWrap = $('.links', card);
+        state.links.forEach(tpl => {
+          const a = document.createElement('a');
+          a.className = 'pill'; a.href = linkFor(tpl, contest, y); a.target = '_blank'; a.rel = 'noopener'; a.textContent = tpl.name; linksWrap.appendChild(a);
+        });
+        (state[`custom:${contest}:${y}`] || []).forEach(u=>{
+          const a = document.createElement('a'); a.className='pill'; a.href=u.href; a.target='_blank'; a.rel='noopener'; a.textContent=u.name; linksWrap.appendChild(a);
+        })
+        bmList.appendChild(card);
+      });
+    }
+
+    /* ----------------------
+       Stats & Study Log
+    ---------------------- */
+    function updateStats(){
+      const contest = getContest();
+      const years = getYears(contest);
+      let solved=0, attempted=0, yearsTouched=0;
+      years.forEach(y=>{
+        const p = readProg(contest,y);
+        let has = false;
+        for(let i=1;i<=6;i++){
+          const v=p['p'+i]||0; if(v>0) has=true; if(v===2) solved++; if(v>0) attempted++;
+        }
+        if(has) yearsTouched++;
+      });
+      $('#statSolved').textContent = solved;
+      $('#statAttempted').textContent = attempted;
+      $('#statYears').textContent = yearsTouched + ' / ' + years.length;
+      const minutes = state.study.reduce((s,x)=>s + (x.t||0), 0);
+      $('#studyMinutes').textContent = minutes + ' min';
+      // log list
+      const log = state.study.slice().reverse().slice(0,20).map(x=>{
+        const d = new Date(x.ts||Date.now());
+        return `<div>• ${x.t} min — <span class="muted">${d.toLocaleString()}</span> — ${x.note||''}</div>`
+      }).join('');
+      $('#logList').innerHTML = log || '<div class="muted">No logs yet. Add your first study entry!</div>';
+    }
+
+    $('#addLogBtn').addEventListener('click', ()=>{
+      const t = parseInt($('#logMinutes').value,10)||0; const note=$('#logNote').value.trim();
+      if(!t) return; state.study.push({t, note, ts: Date.now()}); save(); $('#logMinutes').value=''; $('#logNote').value=''; updateStats();
+    });
+
+    /* ----------------------
+       Tabs, Search, Picker
+    ---------------------- */
+    $$('.tab').forEach(tab=> tab.addEventListener('click', ()=>{
+      $$('.tab').forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      $$('.tabview').forEach(v=> v.style.display='none');
+      $('#'+tab.dataset.tab).style.display='block';
+    }));
+
+    search.addEventListener('input', render);
+
+    function getContest(){
+      const val = picker.value === 'custom' ? 'IMO' : picker.value;
+      return val;
+    }
+
+    picker.addEventListener('change', e=>{
+      if(e.target.value==='custom') openAddContest(); else render();
+    });
+
+    function openAddContest(){
+      $('#modalTitle').textContent = 'Add custom contest';
+      $('#modalBody').innerHTML = `
+        <label><span>Contest code (short, no spaces)</span>
+          <input type="text" id="ccode" placeholder="e.g. NUSMO">
+        </label>
+        <div style="height:10px"></div>
+        <label><span>Years (comma or hyphen range)</span>
+          <input type="text" id="cyears" placeholder="e.g. 2015-2025">
+        </label>
+        <div style="height:16px"></div>
+        <button class="btn primary" id="saveContest">Save</button>
+      `;
+      modal.showModal();
+      $('#saveContest').onclick = () =>{
+        const id = $('#ccode').value.trim(); if(!id) return;
+        const yrs = parseYears($('#cyears').value.trim());
+        state.contests[id] = {years: yrs.length? yrs : [new Date().getFullYear()]};
+        // add to picker
+        const opt = document.createElement('option'); opt.value=id; opt.textContent=id; picker.insertBefore(opt, picker.querySelector('option[value="custom"]'));
+        picker.value=id; save(); modal.close(); render();
+      }
+    }
+
+    function parseYears(text){
+      if(!text) return [];
+      text = text.replace(/\s+/g,'');
+      const parts = text.split(',');
+      const yrs = [];
+      parts.forEach(p=>{
+        if(/^-?\d+$/.test(p)) yrs.push(parseInt(p));
+        else if(/^(\d{4})-(\d{4})$/.test(p)){
+          const [,a,b]=p.match(/(\d{4})-(\d{4})/); for(let y=+a;y<=+b;y++) yrs.push(y);
+        }
+      });
+      return yrs;
+    }
+
+    /* ----------------------
+       Add custom link / Settings / Export
+    ---------------------- */
+    $('#addLinkBtn').addEventListener('click', ()=>{
+      const contest = getContest();
+      $('#modalTitle').textContent = 'Add custom link';
+      $('#modalBody').innerHTML = `
+        <div class="row">
+          <label><span>Contest</span><input type="text" id="lkContest" value="${contest}"></label>
+          <label><span>Year</span><input type="text" id="lkYear" placeholder="e.g. 2019"></label>
+        </div>
+        <div style="height:10px"></div>
+        <div class="row">
+          <label><span>Label</span><input type="text" id="lkName" placeholder="e.g. PDF (English)"></label>
+          <label><span>URL</span><input type="text" id="lkHref" placeholder="https://..."></label>
+        </div>
+        <div style="height:16px"></div>
+        <button class="btn primary" id="saveLink">Add link</button>
+      `;
+      modal.showModal();
+      $('#saveLink').onclick = () =>{
+        const c = $('#lkContest').value.trim()||contest;
+        const y = parseInt($('#lkYear').value,10); if(!y) return;
+        const name = $('#lkName').value.trim() || 'Custom';
+        const href = $('#lkHref').value.trim(); if(!href) return;
+        const key = `custom:${c}:${y}`;
+        state[key] = state[key] || []; state[key].push({name, href}); save(); modal.close(); render();
+      }
+    });
+
+    $('#settingsBtn').addEventListener('click', ()=>{
+      $('#modalTitle').textContent = 'Settings';
+      const linkList = state.links.map((tpl,i)=>`<div class="row" style="margin-bottom:10px"><label><span>Label</span><input data-k="name" data-i="${i}" type="text" value="${tpl.name}"></label><label><span>Template (use {contest} and {year})</span><input data-k="hrefTpl" data-i="${i}" type="text" value="${escapeAttr(toTemplateString(tpl))}"></label></div>`).join('');
+      $('#modalBody').innerHTML = `
+        <div class="sub" style="margin-bottom:8px">Customize link templates. Example: <code>https://example.com/{contest}/{year}.pdf</code>. For search pages, leave as-is.</div>
+        ${linkList}
+        <button class="btn" id="addTpl">➕ Add template</button>
+        <div style="height:10px"></div>
+        <button class="btn primary" id="saveTpl">Save</button>
+      `;
+      modal.showModal();
+
+      $('#addTpl').onclick = () =>{
+        state.links.push({name:'New Link', href:(c,y)=>`https://example.com/${c}/${y}`});
+        modal.close(); setTimeout(()=>$('#settingsBtn').click(),50);
+      }
+      $('#saveTpl').onclick = () =>{
+        $$('#modalBody input').forEach(inp=>{
+          const i = +inp.dataset.i; const k = inp.dataset.k;
+          if(!Number.isFinite(i)) return;
+          if(k==='name') state.links[i].name = inp.value.trim()||state.links[i].name;
+          if(k==='hrefTpl'){ state.links[i].href = fromTemplateString(inp.value.trim()); }
+        });
+        save(); modal.close(); render();
+      }
+    });
+
+    function toTemplateString(tpl){
+      // If tpl.href is a function that returns a search URL, we show it literally
+      try{
+        const sample = tpl.href('IMO','2019');
+        if(sample.includes('duckduckgo.com/?q=')) return '{search}';
+      }catch{}
+      // naive – this is just for UX; allows users to see a literal template where we can
+      return '{custom}';
+    }
+    function escapeAttr(s){return s.replace(/"/g,'&quot;')}
+    function fromTemplateString(s){
+      if(!s || s==='{search}' || s==='{custom}') return defaultPdfTemplate.href; // fallback
+      // convert "...{contest}...{year}..." → function
+      if(s.includes('{contest}') || s.includes('{year}')){
+        return (contest, year) => s.replaceAll('{contest}', encodeURIComponent(contest)).replaceAll('{year}', encodeURIComponent(year));
+      }
+      // else treat as literal base and append contest/year
+      return (contest, year) => s + '/' + encodeURIComponent(contest) + '/' + encodeURIComponent(year);
+    }
+
+    // Export
+    $('#exportBtn').addEventListener('click', ()=>{
+      const blob = new Blob([JSON.stringify(state)], {type:'application/json'});
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'math-vault-data.json'; a.click();
+      setTimeout(()=> URL.revokeObjectURL(a.href), 1000);
+    });
+
+    // Import via drag & drop
+    window.addEventListener('dragover', e=>{ e.preventDefault(); });
+    window.addEventListener('drop', e=>{
+      e.preventDefault(); const f = e.dataTransfer.files?.[0]; if(!f) return;
+      const rd = new FileReader(); rd.onload = ()=>{ try{ state = JSON.parse(rd.result); save(); render(); } catch{} };
+      rd.readAsText(f);
+    });
+
+    // Initial
+    render();
+  </script>
+</body>
+</html>
