@@ -1,6 +1,8 @@
 // ======= CONFIG =======
 // Replace with your Apps Script Web App URL (created below).
-const SHEET_ENDPOINT = "YOUR_WEB_APP_DEPLOYMENT_URL_GOES_HERE"; // ends with /exec
+// app.js
+const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbyvA4luu_oydDgQGAktFnRK3q0Yz4GTPbqEOgZjPfCNxxLYn0LRIT8urJ6xQ8W2oyuD/exec";
+
 
 // Optional: cache-busting on refresh button
 const cacheBuster = () => `cb=${Date.now()}`;
