@@ -151,6 +151,8 @@ async function fetchProblems() {
 searchInput.addEventListener("input", render);
 topicFilter.addEventListener("change", render);
 difficultyFilter.addEventListener("change", render);
+folderFilter.addEventListener("change", render);
+
 refreshBtn.addEventListener("click", () => fetchProblems().catch(console.error));
 
 // ======= INIT =======
