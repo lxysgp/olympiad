@@ -70,6 +70,12 @@ function render() {
   topicFilter.innerHTML = `<option value="">All Topics</option>` +
     topics.map(t => `<option ${t===currentTopic?'selected':''} value="${t}">${t}</option>`).join("");
 
+  // Populate folder dropdown (NEW)
+  const folders = [...new Set(problems.map(p => p.folder).filter(Boolean))].sort();
+  const currentFolder = folderFilter.value;
+  folderFilter.innerHTML = `<option value="">All Folders</option>` +
+    folders.map(f => `<option ${f===currentFolder?'selected':''} value="${f}">${f}</option>`).join("");
+
   // Cards
   const filtered = problems.filter(passesFilters);
   countLabel.textContent = `${filtered.length} problem${filtered.length!==1?'s':''}`;
@@ -80,6 +86,7 @@ function render() {
       <article class="card" data-id="${p.id}">
         <h3>${escapeHtml(p.title)}</h3>
         <div class="badges">
+          ${p.folder ? `<span class="badge">📂 ${escapeHtml(p.folder)}</span>` : ""}  <!-- NEW -->
           ${p.topic ? `<span class="badge">#${escapeHtml(p.topic)}</span>` : ""}
           ${p.difficulty ? `<span class="badge">${escapeHtml(p.difficulty)}</span>` : ""}
           ${p.source ? `<span class="badge">${escapeHtml(p.source)}</span>` : ""}
@@ -104,7 +111,6 @@ function render() {
       const id = card.dataset.id;
       if (e.target.checked) progress.add(id); else progress.delete(id);
       saveProgress();
-      // Update label text without rerendering all
       const label = card.querySelector(".done-label");
       label.textContent = e.target.checked ? "Marked done" : "Mark as done";
     });
