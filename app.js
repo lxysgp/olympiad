@@ -23,6 +23,8 @@ const refreshBtn = document.getElementById("refreshBtn");
 const progressBar = document.getElementById("progressBar");
 const progressLabel = document.getElementById("progressLabel");
 const countLabel = document.getElementById("countLabel");
+const folderFilter = document.getElementById("folderFilter");
+
 
 // ======= HELPERS =======
 function saveProgress() {
@@ -45,17 +47,21 @@ function passesFilters(p) {
   const q = normalize(searchInput.value);
   const topic = topicFilter.value;
   const diff = difficultyFilter.value;
+  const folder = folderFilter.value; // NEW: folder dropdown
 
   const hit =
     normalize(p.title).includes(q) ||
     normalize(p.topic).includes(q) ||
+    normalize(p.folder).includes(q) || // NEW: search also matches folder names
     normalize(p.notes).includes(q);
 
   const topicOk = !topic || p.topic === topic;
   const diffOk = !diff || p.difficulty === diff;
+  const folderOk = !folder || p.folder === folder; // NEW: match folder
 
-  return hit && topicOk && diffOk;
+  return hit && topicOk && diffOk && folderOk;
 }
+
 
 function render() {
   // Populate topic dropdown
