@@ -1,7 +1,7 @@
 // ======= CONFIG =======
 // Replace with your Apps Script Web App URL (created below).
 // app.js
-const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbyvA4luu_oydDgQGAktFnRK3q0Yz4GTPbqEOgZjPfCNxxLYn0LRIT8urJ6xQ8W2oyuD/exec";
+const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbyAVP7RKGDTHAGrc_i5U_eGoJaF0EcxvYz4G0k5UbykiwUw2WuyQnkoI7CzF01YK_U0/exec";
 
 
 // Optional: cache-busting on refresh button
